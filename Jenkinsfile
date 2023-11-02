@@ -43,5 +43,13 @@ pipeline{
                 }
             }
         }
+        stage('Run Python Script') {
+            steps {
+                script {
+                    sh "python3 script.py"
+                }
+          
+              }
+        }
     }
 }
