@@ -6,8 +6,8 @@ pipeline {
     }
 
     environment {
-        ENV_VAR_1 = BRANCH_NAME
-        ENV_VAR_2 = BUILD_NUMBER
+        ENV_VAR_1 = "${BRANCH_NAME}"
+        ENV_VAR_2 = "${BUILD_NUMBER}"
     }
 
     stages {
