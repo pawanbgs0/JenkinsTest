@@ -1,55 +1,22 @@
-def gv
-
-pipeline{
+pipeline {
     agent any
+
     parameters {
-        choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description: "")
-        booleanParam(name: 'executeTests', defaultValue: true, description: "")
+        string(name: 'ARGUMENTS', defaultValue: '', description: 'Arguments for the Python script')
     }
-    stages{
-        stage("init"){
-            steps{
-                script {
-                    gv = load "script.groovy"
-                }
-            }
-        }
 
-        stage("build") {
-            steps {
-                script{
-                    gv.buildApp()
-                }
-            }
-        }
+    environment {
+        ENV_VAR_1 = BRANCH_NAME
+        ENV_VAR_2 = BUILD_NUMBER
+    }
 
-        stage("test"){
-            when {
-                expression {
-                    params.executeTests
-                }
-            }
-            steps{
-                script{
-                    gv.testApp()
-                }
-            }
-        }
-
-        stage("deploy"){
-            steps{
-                script {
-                    gv.deployApp()
-                }
-            }
-        }
+    stages {
         stage('Run Python Script') {
             steps {
                 script {
-                    sh "python3 script.py"
+                    sh "python3 script.py ${ENV_VAR_1} ${ENV_VAR_2} ${params.ARGUMENTS}"
                 }
-          
-              }
+            }
         }
     }
 }
